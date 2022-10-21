@@ -1,5 +1,6 @@
 #include "TransformChar.hpp"
 #include "processCommandLine.hpp"
+#include "runCaesarCipher.hpp"
 #include <cctype>
 #include <fstream>
 #include <iostream>
@@ -33,11 +34,19 @@ int main(int argc, char* argv[])
     bool version_flag{0};
     bool unknown_arg_flag{0};
     std::vector<std::string> unknown_arg_vect{};
+    bool& encrypt_flag{0};
+    bool& encrypt_err_flag{0};
+    bool& decrypt_flag{0}; 
+    bool& decrypt_err_flag{0};
+    int& key{0};
 
     //process the command line arguments
     processCommandLine(cmdLineArgs, inputFile, input_err_flag, outputFile,
                        output_err_flag, help_flag, version_flag,
-                       unknown_arg_flag, unknown_arg_vect);
+                       unknown_arg_flag, unknown_arg_vect,
+                       encrypt_flag, encrypt_err_flag, 
+                       decrypt_flag, decrypt_err_flag,
+                       key);
 
     //interpret any returned flags
     if (help_flag) {
@@ -52,6 +61,10 @@ int main(int argc, char* argv[])
             << "                   Stdin will be used if not supplied\n\n"
             << "  -o FILE          Write processed text to FILE\n"
             << "                   Stdout will be used if not supplied\n\n"
+            << "  --encrypt INT    Encrypt text via a Caeser Shift of magnitude INT\n"
+            << "                   No encryption if unspecified\n\n"
+            << "  --decrypt INT    Decrypt text via a Caeser Shift of magnitude INT\n"
+            << "                   No decryption if unspecified\n\n"
             << std::endl;
         return 0;
     }
@@ -69,6 +82,14 @@ int main(int argc, char* argv[])
         std::cerr << "[error] -i requires a filename argument" << std::endl;
         return 1;
     }
+    if (encrypt_err_flag){
+        std::cerr << "[error] --encrypt requires an integer argument" << std::endl;
+        return 1;
+    }
+    if (decrypt_err_flag){
+        std::cerr << "[error] --decrypt requires an integer argument" << std::endl;
+        return 1;
+    }
     if (unknown_arg_flag) {
         std::cerr << "[error] unknown argument(s) "
                   << "\n";
@@ -82,7 +103,7 @@ int main(int argc, char* argv[])
     char inputChar{'x'};
     std::string inputText;
 
-    //Read in input
+    //Read in input and transliterate it.
     if (!inputFile.empty()) {
         std::ifstream in_file{inputFile};
 
@@ -101,12 +122,15 @@ int main(int argc, char* argv[])
             inputText += transform_char(inputChar);
         }
     }
+    //Transform transliterated string via Caeser Shift
+    std::string outText{CaesarCipher(key, inputText, encrypt_flag, decrypt_flag)};
+
 
     //Read out output, to file, else, stdout.
     if (!outputFile.empty()) {
         std::ofstream out_file{outputFile};
         if (out_file.good()) {
-            out_file << inputText << "\n";
+            out_file << outText << "\n";
         }
 
         else {
@@ -116,7 +140,7 @@ int main(int argc, char* argv[])
         }
         out_file.close();
     } else {
-        std::cout << inputText << std::endl;
+        std::cout << outText<< std::endl;
     }
     return 0;
 }
