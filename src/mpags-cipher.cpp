@@ -1,10 +1,26 @@
 #include "TransformChar.hpp"
 #include "processCommandLine.hpp"
 #include <cctype>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
+/*
+std::string name {"myoutputfiletxt"};
+std::ofstream out_file {name};
+bool ok_to_write = out_file.good();
+out_file << "Some text\n";
+file.close();
+
+std::string name {"myinputfile.txt"};
+std::ifstream in_file {name};
+bool ok_to_read = in_file.good();
+in_file >> inputChar;
+file.close();
+
+std::ofstream out_file{ name, std::ios::app};
+*/
 int main(int argc, char* argv[])
 {
     //Initialise command line arguments
@@ -66,25 +82,41 @@ int main(int argc, char* argv[])
     char inputChar{'x'};
     std::string inputText;
 
-    // Read in user input from stdin/file
-    // Warn that input file option not yet implemented
+    //Read in input
     if (!inputFile.empty()) {
-        std::cerr << "[warning] input from file ('" << inputFile
-                  << "') not implemented yet, using stdin\n";
+        std::ifstream in_file{inputFile};
+
+        if (in_file.good()) {
+            while (in_file >> inputChar) {
+                inputText += transform_char(inputChar);
+            }
+        } else {
+            std::cout << "Input File not good, please see -h"
+                      << "\n";
+            return 1;
+        }
+        in_file.close();
+    } else {
+        while (std::cin >> inputChar) {
+            inputText += transform_char(inputChar);
+        }
     }
 
-    // loop over each character from user input
-    while (std::cin >> inputChar) {
-        inputText += transform_char(inputChar);
-    }
-
-    // Print out the transliterated text
-    // Warn that output file option not yet implemented
+    //Read out output, to file, else, stdout.
     if (!outputFile.empty()) {
-        std::cerr << "[warning] output to file ('" << outputFile
-                  << "') not implemented yet, using stdout\n";
-    }
+        std::ofstream out_file{outputFile};
+        if (out_file.good()) {
+            out_file << inputText << "\n";
+        }
 
-    std::cout << inputText << std::endl;
+        else {
+            std::cout << "Output File not good, please see -h"
+                      << "\n";
+            return 1;
+        }
+        out_file.close();
+    } else {
+        std::cout << inputText << std::endl;
+    }
     return 0;
 }
