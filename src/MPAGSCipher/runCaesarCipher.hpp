@@ -4,8 +4,8 @@
 #include <string>
 
 
-//Caeser Shifting the string. 
-std::string CaeserCipher(
+//Caesar Shifting the string. 
+std::string runCaesarCipher(
     const int& init_key,
     const std::string& in_text,
     const bool& encrypt,

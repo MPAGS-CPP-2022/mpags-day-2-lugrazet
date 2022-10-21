@@ -61,7 +61,8 @@ bool processCommandLine(const std::vector<std::string>& args,
                 i++;
             } else {
                 // Got Key, so assign value and advance past it
-                key = args[i + 1];
+                encrypt_flag = 1;
+                key = std::stoi(args[i + 1]);
                 ++i;
             }
         }
@@ -76,7 +77,8 @@ bool processCommandLine(const std::vector<std::string>& args,
                 i++;
             } else {
                 // Got filename, so assign value and advance past it
-                key = args[i + 1];
+                decrypt_flag = 1;
+                key = std::stoi(args[i + 1]);
                 ++i;
             }
 
