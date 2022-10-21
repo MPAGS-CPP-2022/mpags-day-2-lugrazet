@@ -7,21 +7,6 @@
 #include <string>
 #include <vector>
 
-/*
-std::string name {"myoutputfiletxt"};
-std::ofstream out_file {name};
-bool ok_to_write = out_file.good();
-out_file << "Some text\n";
-file.close();
-
-std::string name {"myinputfile.txt"};
-std::ifstream in_file {name};
-bool ok_to_read = in_file.good();
-in_file >> inputChar;
-file.close();
-
-std::ofstream out_file{ name, std::ios::app};
-*/
 int main(int argc, char* argv[])
 {
     //Initialise command line arguments

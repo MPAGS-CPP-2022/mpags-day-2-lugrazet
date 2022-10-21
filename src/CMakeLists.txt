@@ -11,8 +11,9 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 add_executable(mpags-cipher 
     mpags-cipher.cpp
     MPAGSCipher/TransformChar.cpp
+    MPAGSCipher/runCaeserCipher.cpp
     MPAGSCipher/processCommandLine.cpp
-    MPAGSCipher/runCaeserCipher.cpp)
+    )
     
 target_include_directories(mpags-cipher
     PRIVATE MPAGSCipher
