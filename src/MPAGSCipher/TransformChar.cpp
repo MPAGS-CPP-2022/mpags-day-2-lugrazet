@@ -7,9 +7,9 @@ std::string transform_char(const char in_char)
     /*Take input character and transliterate
 
     Takes a char as input
-    Removes alphanumeric characters
-    Transforms a number to it's word form 
-    (i.e. 1 -> ONE)
+    Removes non-alphanumeric characters
+    Transforms a number to it's English word form 
+    (e.g. 1 -> ONE)
     Capitalises an alpha char
     returns string
     */
