@@ -6,10 +6,10 @@
 
 //Caesar Shifting the string. 
 std::string runCaesarCipher(
-    const int& init_key,
+    const std::size_t init_key,
     const std::string& in_text,
-    const bool& encrypt,
-    const bool& decrypt
+    const bool encrypt,
+    const bool decrypt
 );
 
 #endif    //MPAGSCIPHER_RUNCAESERCIPHER_HPP

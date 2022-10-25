@@ -12,10 +12,11 @@ Windows platforms with Visual Studio 2015 or better are also expected to
 work, but not tested.
 
 To build from a clone of this repository, open a terminal window
-and change directory into that holding this README. Then run:
+and change directory into /build. Then run:
 ```
-$ ./build/make
-$ ./build/mpags-cipher <options>
+$ cmake ../src
+$ make
+$ ./mpags-cipher <options>
 
 If no input file is supplied, `mpags-cipher` will wait for user input
 from the keyboard until RETURN followed by CTRL-D are pressed.

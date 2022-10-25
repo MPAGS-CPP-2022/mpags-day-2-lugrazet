@@ -2,6 +2,27 @@
 #include <string>
 #include <vector>
 
+/*
+Take the command line arguments, raises the 
+correct flags, saves the correct information (if any)
+
+    Takes the command line vector args
+    Checks for help request
+    Checks for version request
+    Checks for input file request, and the following file name
+    Checks for output file request, and the following file name
+    Checks for Encryption request, and the following key
+    Checks for Decryption request, and the following key
+    Checks for an unknown request
+       
+    returns False if no flags have been raised.
+    returns True if any flags have been raised.
+    All flags should be entered as false, and will return as 
+    true if they need attention in main.
+
+*/
+
+
 bool processCommandLine(const std::vector<std::string>& args,
                         std::string& input_file_name, bool& input_err_flag,
                         std::string& output_file_name, bool& output_err_flag,
@@ -26,10 +47,7 @@ bool processCommandLine(const std::vector<std::string>& args,
         else if (args[i] == "-i") {
             // Next element is filename unless next argument is another flag or doesn't exist
             if (i == args.size() - 1) {
-                input_err_flag = 1;
-            } else if (args[i + 1][0] == '-') {
-                input_err_flag = 1;
-                i++;
+                input_err_flag = true;
             } else {
                 // Got filename, so assign value and advance past it
                 input_file_name = args[i + 1];
@@ -39,11 +57,7 @@ bool processCommandLine(const std::vector<std::string>& args,
         } else if (args[i] == "-o") {
             // Next element is filename unless next argument is another flag or doesn't exist
             if (i == args.size() - 1) {
-                output_err_flag = 1;
-            }
-            if (args[i + 1][0] == '-') {
-                output_err_flag = 1;
-                i++;
+                output_err_flag = true;
             } else {
                 // Got filename, so assign value and advance past it
                 output_file_name = args[i + 1];
@@ -54,14 +68,11 @@ bool processCommandLine(const std::vector<std::string>& args,
         else if (args[i] == "--encrypt"){
             // Next element is Key unless next argument is another flag or doesn't exist
             if (i == args.size() - 1) {
-                encrypt_err_flag = 1;
+                encrypt_err_flag = true;
             }
-            if (args[i + 1][0] == '-') {
-                encrypt_err_flag = 1;
-                i++;
-            } else {
+             else {
                 // Got Key, so assign value and advance past it
-                encrypt_flag = 1;
+                encrypt_flag = true;
                 key = std::stoi(args[i + 1]);
                 ++i;
             }
@@ -72,12 +83,9 @@ bool processCommandLine(const std::vector<std::string>& args,
             if (i == args.size() - 1) {
                 decrypt_err_flag = 1;
             }
-            if (args[i + 1][0] == '-') {
-                decrypt_err_flag = 1;
-                i++;
-            } else {
+             else {
                 // Got filename, so assign value and advance past it
-                decrypt_flag = 1;
+                decrypt_flag = true;
                 key = std::stoi(args[i + 1]);
                 ++i;
             }
@@ -89,9 +97,9 @@ bool processCommandLine(const std::vector<std::string>& args,
             unknown_arg_vect.push_back(args[i]);
         }
     }
-    if (unknown_arg_flag || input_err_flag || output_err_flag || encrypt_err_flag ||decrypt_err_flag ) {
-        return 1;
-        //return 1 so we can close check in main and close it before anything breaks.
+    if (help_flag || version_flag || unknown_arg_flag || input_err_flag || output_err_flag || encrypt_err_flag ||decrypt_err_flag ) {
+        return true;
+        //Checks if any flags have been raised.
     }
-    return 0;
+    return false;
 }
