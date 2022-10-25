@@ -61,8 +61,6 @@ std::string transform_char(const char in_char)
                 out_char += std::toupper(in_char);
                 break;
         }
-        return out_char;
-    } else {
-        return {};
     }
+    return out_char;
 }
