@@ -20,7 +20,10 @@ target_include_directories(mpags-cipher
     )   
 
 #our standard set of flags
-set(CMAKE_CXX_FLATS "-Wall -Wextra -Werror -Wfatal_errors -Wshadow -pedantic")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -Wshadow -pedantic")
+
+# - Don't allow C++ Compiler Vendor Extensions
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_CXX_STANDARD 11)
 
