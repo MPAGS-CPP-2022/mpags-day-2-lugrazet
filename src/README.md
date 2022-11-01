@@ -1,5 +1,5 @@
 # mpags-cipher
-A simple command line tool for encrypting/decrypting text using classical ciphers
+A simple command line tool for encrypting/decrypting text using a Caesar Shift
 
 ## Authors
 Thomas Latham, Ben Morgan, Mark Slater, Matt Williams, Luke Kreczko
@@ -12,13 +12,11 @@ Windows platforms with Visual Studio 2015 or better are also expected to
 work, but not tested.
 
 To build from a clone of this repository, open a terminal window
-and change directory into that holding this README. Then run:
+and change directory into /build. Then run:
 ```
-$ ls
-LICENSE          README.md        mpags-cipher.cpp
-$ g++ -std=c++11 -Wall -Wextra -Werror -Wfatal-errors -pedantic -Wshadow -o mpags-cipher mpags-cipher.cpp
-$ ./mpags-cipher
-```
+$ cmake ../src
+$ make
+$ ./mpags-cipher <options>
 
 If no input file is supplied, `mpags-cipher` will wait for user input
 from the keyboard until RETURN followed by CTRL-D are pressed.
@@ -29,14 +27,22 @@ classical ciphers, it is transliterated using the following rules:
 - Digits are translated to their English equivalent words (e.g. '0' -> "ZERO")
 - All other characters (punctuation) are discarded
 
-The results of this transliteration are output after CTRL-D.
+The results of this transliteration are then Caesar shifted by the encryption/decryption key that was provided. (No encryption is the same as encryption of key 0).
+The shifted string is then output to a text file, or if none is provided, is output to stdout.
 
 ## Source code layout
 ```
-.
-├── LICENSE             License file, in our case MIT
-├── mpags-cipher.cpp    Main program C++ source file
-└── README.md           This file, describes the project
+├── CMakeLists.txt
+├── LICENSE                     License file, in our case MIT
+├── MPAGSCipher                 Folder of Modularised Code segments
+│   ├── processCommandLine.cpp  Interprets command line arguments
+│   ├── processCommandLine.hpp  Header file of ^
+│   ├── runCaesarCipher.cpp     Performs a Caesar shift
+│   ├── runCaesarCipher.hpp     Header file of ^
+│   ├── TransformChar.cpp       Transliterates strings
+│   └── TransformChar.hpp       Header file of ^
+├── mpags-cipher.cpp            Main program C++ source file
+└── README.md                   This file, describes the project  
 ```
 
 ## Copying
